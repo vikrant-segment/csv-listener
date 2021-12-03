@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "payload.location",
+      "type": "java.lang.String",
+      "description": "Description for payload.location."
+    },
+    {
+      "name": "kafka.topic",
+      "type": "java.lang.String",
+      "description": "Description for kafka.topic."
+    }
+  ]
+}
