@@ -26,7 +26,7 @@ public class CsvDiscovery {
             try (Stream<Path> walk = Files.walk(payloadPath)) {
                 List<Path> files = walk.filter(Files::isRegularFile)
                         .collect(Collectors.toList());
-                log.info("Found {} files at the payload location",files.size());
+                log.debug("Found files at the payload location {}", files);
                 return files;
             }
         }

@@ -56,7 +56,9 @@ public class CsvReader {
         log.info("Job started at {}", Instant.now());
 
         List<Path> payload = discovery.getPayload();
-        if (payload != null && !payload.isEmpty()) {
+        log.info("Found {} files at the payload location", payload.size());
+
+        if (!payload.isEmpty()) {
             payload.iterator().forEachRemaining(p -> {
                 try {
                     String filename = p.toFile().getName();
