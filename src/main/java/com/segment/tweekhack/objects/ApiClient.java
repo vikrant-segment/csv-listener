@@ -10,6 +10,10 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.function.Function;
+
 @Service
 @Slf4j
 public class ApiClient {
@@ -22,9 +26,11 @@ public class ApiClient {
     });
 
     private ExchangeFilterFunction responseLoggingFilter = ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-        log.info("Received response from Segment- Headers: {}, Status: {}", clientResponse.headers().asHttpHeaders().toString(), clientResponse.statusCode());
+        log.info("Received response from Segment- Headers: {}, Status: {}", clientResponse.headers().asHttpHeaders(), clientResponse.statusCode());
         return Mono.just(clientResponse);
     });
+
+    private Function<String, String> toSegmentAuth = key -> String.valueOf(Base64.getEncoder().encodeToString((key + ":").getBytes(StandardCharsets.UTF_8)));
 
     @Value(value = "${objects.api.url}")
     private String url;
@@ -42,7 +48,7 @@ public class ApiClient {
                 .build();
         return webClient.post()
                 .uri(uri)
-                .header(HttpHeaders.AUTHORIZATION, "Basic " + writeKey)
+                .header(HttpHeaders.AUTHORIZATION, "Basic " + toSegmentAuth.apply(writeKey))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .retrieve()
