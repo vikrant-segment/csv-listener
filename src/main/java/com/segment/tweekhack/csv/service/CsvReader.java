@@ -113,6 +113,7 @@ public class CsvReader {
         while (mapIter.hasNext()) {
             Map.Entry<String, Object> entry = mapIter.next();
             String key = entry.getKey();
+            key = key.replaceAll(" ", Constants.UNDERSCORE);
             key = key.replaceAll(Constants.HYPHEN, Constants.UNDERSCORE);
             key = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, key);
             key = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, key);
